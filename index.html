@@ -1,11 +1,1644 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=\, initial-scale=1.0" />
-    <title>Komyut Evaluation</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="robots" content="noindex" />
+    <title>KOMYUT Test Checklist</title>
+    <link rel="icon" href="data:," />
+    <style>
+      :root {
+        --bg: #f5f7f9;
+        --card: #ffffff;
+        --text: #14212e;
+        --muted: #4a5a69;
+        --line: #d5dde4;
+        --accent: #137a5a;
+        --accent-soft: #e3f3ec;
+        --pass: #137a5a;
+        --fail: #b3261e;
+        --ns: #5b6670;
+        --pass-bg: #e3f3ec;
+        --fail-bg: #fbe9e7;
+        --ns-bg: #eceff1;
+        --warn-bg: #fff4d6;
+        --warn-text: #5c4300;
+        --focus: #0b63c4;
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #0d1b2a;
+          --card: #152536;
+          --text: #f1f5f8;
+          --muted: #b3c1cd;
+          --line: #2c4053;
+          --accent: #2ecc71;
+          --accent-soft: #173a2e;
+          --pass: #4fdc8b;
+          --fail: #ff8a80;
+          --ns: #b8c4ce;
+          --pass-bg: #173a2e;
+          --fail-bg: #43211f;
+          --ns-bg: #253646;
+          --warn-bg: #3d3214;
+          --warn-text: #ffe08a;
+          --focus: #7cb8ff;
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #0d1b2a;
+        --card: #152536;
+        --text: #f1f5f8;
+        --muted: #b3c1cd;
+        --line: #2c4053;
+        --accent: #2ecc71;
+        --accent-soft: #173a2e;
+        --pass: #4fdc8b;
+        --fail: #ff8a80;
+        --ns: #b8c4ce;
+        --pass-bg: #173a2e;
+        --fail-bg: #43211f;
+        --ns-bg: #253646;
+        --warn-bg: #3d3214;
+        --warn-text: #ffe08a;
+        --focus: #7cb8ff;
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          16px/1.5 system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          "Helvetica Neue",
+          Arial,
+          sans-serif;
+        overflow-wrap: anywhere;
+      }
+      a {
+        color: var(--accent);
+      }
+      :focus-visible {
+        outline: 3px solid var(--focus);
+        outline-offset: 2px;
+      }
+      .wrap {
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 0 14px;
+      }
+      .skip {
+        position: absolute;
+        left: -9999px;
+      }
+      .skip:focus {
+        left: 8px;
+        top: 8px;
+        background: var(--card);
+        padding: 8px 12px;
+        z-index: 10;
+      }
+
+      header.top {
+        padding: 22px 0 8px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .wordmark {
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        font-size: 1.5rem;
+        margin: 0;
+      }
+      .wordmark span {
+        color: var(--accent);
+      }
+      .subtitle {
+        margin: 2px 0 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      .meta-line {
+        margin: 10px 0 0;
+        font-size: 0.92rem;
+        color: var(--muted);
+      }
+      .meta-line b {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .btn {
+        font: inherit;
+        font-size: 0.95rem;
+        border: 1px solid var(--line);
+        background: var(--card);
+        color: var(--text);
+        border-radius: 8px;
+        padding: 9px 14px;
+        cursor: pointer;
+        min-height: 44px;
+      }
+      .btn:hover {
+        border-color: var(--accent);
+      }
+      .btn.primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+      }
+      :root[data-theme="dark"] .btn.primary {
+        color: #0d1b2a;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) .btn.primary {
+          color: #0d1b2a;
+        }
+      }
+      .btn.danger {
+        color: var(--fail);
+        border-color: var(--fail);
+      }
+      .btn.small {
+        padding: 6px 10px;
+        min-height: 36px;
+        font-size: 0.88rem;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+        margin: 14px 0;
+      }
+      .card h2 {
+        margin: 0 0 8px;
+        font-size: 1.1rem;
+      }
+      .card p,
+      .card li {
+        margin: 6px 0;
+      }
+      .card ul {
+        padding-left: 20px;
+        margin: 6px 0;
+      }
+      .notice {
+        background: var(--accent-soft);
+        border-color: transparent;
+      }
+      .warn {
+        background: var(--warn-bg);
+        color: var(--warn-text);
+        border-color: transparent;
+      }
+      .muted {
+        color: var(--muted);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      @media (min-width: 600px) {
+        .grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      .field label {
+        display: block;
+        font-weight: 600;
+        font-size: 0.92rem;
+        margin-bottom: 4px;
+      }
+      .field input,
+      textarea {
+        width: 100%;
+        font: inherit;
+        color: var(--text);
+        background: var(--bg);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 9px 10px;
+        min-height: 44px;
+      }
+      textarea {
+        min-height: 64px;
+        resize: vertical;
+      }
+      .req {
+        color: var(--fail);
+      }
+
+      .progress-bar {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background: var(--bg);
+        border-bottom: 1px solid var(--line);
+        padding: 8px 0;
+      }
+      .progress-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .progress-text {
+        font-weight: 600;
+        font-size: 0.95rem;
+        flex: 1 1 140px;
+      }
+      .meter {
+        height: 8px;
+        background: var(--line);
+        border-radius: 99px;
+        overflow: hidden;
+        margin-top: 6px;
+      }
+      .meter > div {
+        height: 100%;
+        width: 0;
+        background: var(--accent);
+        transition: width 0.2s;
+      }
+      .save-status {
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+
+      .role-title {
+        margin: 26px 0 4px;
+        font-size: 1.25rem;
+      }
+      details.section {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        margin: 10px 0;
+      }
+      details.section > summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        min-height: 44px;
+      }
+      details.section > summary::-webkit-details-marker {
+        display: none;
+      }
+      details.section > summary::before {
+        content: "▸";
+        color: var(--muted);
+        margin-right: 2px;
+      }
+      details.section[open] > summary::before {
+        content: "▾";
+      }
+      .sum-title {
+        flex: 1;
+      }
+      .count {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .count.done {
+        color: var(--pass);
+      }
+      .items {
+        padding: 0 16px 8px;
+      }
+
+      fieldset.item {
+        border: 0;
+        border-top: 1px solid var(--line);
+        margin: 0;
+        padding: 14px 0;
+        scroll-margin-top: 90px;
+      }
+      fieldset.item legend {
+        padding: 0;
+        margin-bottom: 8px;
+        font-weight: 500;
+        float: left;
+        width: 100%;
+      }
+      fieldset.item legend + * {
+        clear: both;
+      }
+      .iid {
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-right: 6px;
+      }
+      .choices {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .choice {
+        position: relative;
+      }
+      .choice input {
+        position: absolute;
+        opacity: 0;
+        width: 1px;
+        height: 1px;
+      }
+      .choice label {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        min-width: 92px;
+        padding: 6px 12px;
+        border: 1.5px solid var(--line);
+        border-radius: 99px;
+        cursor: pointer;
+        font-size: 0.92rem;
+        user-select: none;
+      }
+      .choice input:focus-visible + label {
+        outline: 3px solid var(--focus);
+        outline-offset: 2px;
+      }
+      .choice input[value="pass"]:checked + label {
+        background: var(--pass-bg);
+        border-color: var(--pass);
+        color: var(--pass);
+        font-weight: 700;
+      }
+      .choice input[value="fail"]:checked + label {
+        background: var(--fail-bg);
+        border-color: var(--fail);
+        color: var(--fail);
+        font-weight: 700;
+      }
+      .choice input[value="notshown"]:checked + label {
+        background: var(--ns-bg);
+        border-color: var(--ns);
+        color: var(--text);
+        font-weight: 700;
+      }
+      .choice input:checked + label::before {
+        content: "✓ ";
+        white-space: pre;
+      }
+      .note {
+        margin-top: 8px;
+      }
+      .note label {
+        font-size: 0.85rem;
+        color: var(--muted);
+        display: block;
+        margin-bottom: 2px;
+      }
+      .flash {
+        animation: flash 1.2s ease-out;
+      }
+      @keyframes flash {
+        from {
+          background: var(--warn-bg);
+        }
+        to {
+          background: transparent;
+        }
+      }
+
+      .totals {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        margin: 8px 0 12px;
+      }
+      @media (min-width: 600px) {
+        .totals {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+      .tot {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+      }
+      .tot b {
+        display: block;
+        font-size: 1.5rem;
+      }
+      .tot.pass b {
+        color: var(--pass);
+      }
+      .tot.fail b {
+        color: var(--fail);
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .msg {
+        margin-top: 8px;
+        font-size: 0.92rem;
+        min-height: 1.2em;
+      }
+      .msg.err {
+        color: var(--fail);
+        font-weight: 600;
+      }
+      .send {
+        font-size: 1.02rem;
+      }
+      footer {
+        padding: 20px 0 40px;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      .pv,
+      .print-only {
+        display: none;
+      }
+
+      @media print {
+        @page {
+          size: A4;
+          margin: 16mm 14mm;
+        }
+        :root,
+        :root[data-theme="dark"] {
+          --bg: #fff;
+          --card: #fff;
+          --text: #000;
+          --muted: #333;
+          --line: #999;
+          --pass: #000;
+          --fail: #000;
+          --ns: #000;
+          color-scheme: light;
+        }
+        body {
+          font-size: 10.5pt;
+          background: #fff;
+          color: #000;
+        }
+        .wrap {
+          max-width: none;
+          padding: 0;
+        }
+        .no-print,
+        .progress-bar,
+        .actions,
+        .skip,
+        .choices,
+        .note textarea,
+        .field input,
+        #comments,
+        .save-status,
+        .msg,
+        footer {
+          display: none !important;
+        }
+        .print-only {
+          display: block;
+        }
+        .pv {
+          display: inline;
+          font-weight: 600;
+        }
+        .card,
+        details.section {
+          border: 0;
+          border-radius: 0;
+          padding: 0;
+          margin: 0 0 10pt;
+          background: none;
+        }
+        details.section > summary {
+          padding: 4pt 0;
+          border-bottom: 1.5pt solid #000;
+        }
+        details.section > summary::before,
+        details.section[open] > summary::before {
+          content: none;
+        }
+        .items {
+          padding: 0;
+        }
+        .role-title {
+          margin: 14pt 0 4pt;
+          font-size: 13pt;
+          break-after: avoid;
+        }
+        fieldset.item {
+          padding: 5pt 0;
+          border-top: 0.5pt solid #bbb;
+          break-inside: avoid;
+        }
+        fieldset.item legend {
+          margin-bottom: 2pt;
+        }
+        .result-line {
+          font-size: 10pt;
+        }
+        .note-print {
+          font-size: 9.5pt;
+          white-space: pre-wrap;
+          margin-top: 1pt;
+        }
+        .note label,
+        .req {
+          display: none;
+        }
+        .field {
+          break-inside: avoid;
+        }
+        .grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 4pt 16pt;
+        }
+        .tot {
+          border: 0.5pt solid #000;
+        }
+        .tot b {
+          color: #000 !important;
+        }
+        a {
+          color: #000;
+          text-decoration: none;
+        }
+        .sign {
+          margin-top: 18pt;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 24pt;
+        }
+        .sign div {
+          border-top: 0.75pt solid #000;
+          padding-top: 3pt;
+          font-size: 9pt;
+        }
+      }
+    </style>
   </head>
   <body>
-    <p>test!</p>
+    <a class="skip" href="#checklist">Skip to the checklist</a>
+
+    <header class="top wrap">
+      <div class="brand">
+        <div>
+          <h1 class="wordmark">K<span>O</span>MYUT</h1>
+          <p class="subtitle">
+            System test checklist for evaluators · App version
+            <b id="cfg-version"></b>
+          </p>
+        </div>
+        <button
+          type="button"
+          class="btn small no-print"
+          id="theme-btn"
+          aria-label="Colour theme: automatic. Change theme"
+        >
+          Theme: Auto
+        </button>
+      </div>
+      <p class="meta-line">
+        Demo: <b id="cfg-demo"></b> · Meeting link:
+        <span id="cfg-meeting"></span> · Recording:
+        <span id="cfg-recording"></span>
+      </p>
+    </header>
+
+    <div class="progress-bar no-print" role="region" aria-label="Progress">
+      <div class="wrap">
+        <div class="progress-row">
+          <div class="progress-text" id="progress-text" aria-live="polite">
+            0 of 0 answered
+          </div>
+          <span class="save-status" id="save-status" aria-live="polite"></span>
+          <button type="button" class="btn small" id="jump-btn">
+            Jump to unanswered
+          </button>
+        </div>
+        <div class="meter" aria-hidden="true"><div id="meter"></div></div>
+      </div>
+    </div>
+
+    <main class="wrap" id="main">
+      <div class="card warn" id="storage-warn" hidden role="alert">
+        <b>Your browser is not saving answers.</b> Private browsing or blocked
+        storage can cause this. Keep this tab open until you have downloaded
+        your copy (PDF, JSON or CSV), or your answers will be lost.
+      </div>
+
+      <section class="card notice no-print" aria-labelledby="privacy-h">
+        <h2 id="privacy-h">Your answers stay with you</h2>
+        <p>
+          This page has no server and sends nothing anywhere. Your answers are
+          kept only in this browser on this device, and in the files you choose
+          to download. Other evaluators cannot see your answers, and you cannot
+          see theirs.
+        </p>
+      </section>
+
+      <section class="card" aria-labelledby="eval-h">
+        <h2 id="eval-h">Evaluator</h2>
+        <div class="grid">
+          <div class="field">
+            <label for="m-name"
+              >Full name <span class="req" aria-hidden="true">*</span></label
+            >
+            <input
+              id="m-name"
+              data-meta="name"
+              autocomplete="name"
+              required
+              aria-required="true"
+            /><span class="pv" data-pv="name"></span>
+          </div>
+          <div class="field">
+            <label for="m-position">Position</label>
+            <input
+              id="m-position"
+              data-meta="position"
+              autocomplete="organization-title"
+            /><span class="pv" data-pv="position"></span>
+          </div>
+          <div class="field">
+            <label for="m-org">Organisation</label>
+            <input
+              id="m-org"
+              data-meta="organisation"
+              autocomplete="organization"
+            /><span class="pv" data-pv="organisation"></span>
+          </div>
+          <div class="field">
+            <label for="m-date">Date</label>
+            <input id="m-date" data-meta="date" type="date" /><span
+              class="pv"
+              data-pv="date"
+            ></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card no-print" aria-labelledby="how-h">
+        <h2 id="how-h">How this works</h2>
+        <ul>
+          <li>
+            You do not log in to anything or install anything. Our team runs a
+            live screen-share demo with a <b>passenger phone</b>, a
+            <b>driver phone</b> and the <b>admin panel</b>. A recording of the
+            same walkthrough is also available.
+          </li>
+          <li>
+            During the demo the <b>tricycle shed queue is switched on</b>:
+            passengers book from a shed and the system offers each request to
+            the driver first in line.
+          </li>
+          <li>
+            For each item, mark what you saw:
+            <ul>
+              <li><b>Pass</b>: you saw it work as described.</li>
+              <li>
+                <b>Fail</b>: it was shown but did not work as described. Please
+                add a short note.
+              </li>
+              <li>
+                <b>Not shown</b>: it was not demonstrated, or you could not see
+                it clearly.
+              </li>
+            </ul>
+          </li>
+          <li>
+            Notes are optional. Your answers save automatically as you go. It
+            takes about 15 to 20 minutes alongside the demo.
+          </li>
+          <li>
+            When you finish, download your copy and send it as described at the
+            end of the page.
+          </li>
+        </ul>
+      </section>
+
+      <div id="checklist"></div>
+
+      <section class="card" aria-labelledby="sum-h" id="summary">
+        <h2 id="sum-h">Summary</h2>
+        <div class="totals">
+          <div class="tot pass"><b id="t-pass">0</b>Pass</div>
+          <div class="tot fail"><b id="t-fail">0</b>Fail</div>
+          <div class="tot"><b id="t-notshown">0</b>Not shown</div>
+          <div class="tot"><b id="t-open">0</b>Unanswered</div>
+        </div>
+        <div class="field">
+          <label for="comments">Overall comments</label>
+          <textarea id="comments" rows="5"></textarea>
+          <div class="note-print pv" data-pv="comments"></div>
+        </div>
+        <div class="sign print-only">
+          <div>Evaluator signature</div>
+          <div>Date</div>
+        </div>
+      </section>
+
+      <section class="card no-print" aria-labelledby="dl-h">
+        <h2 id="dl-h">Download and send</h2>
+        <p class="send">
+          When you are done, download your copy and send it to
+          <b id="cfg-email"></b>. The PDF is the easiest to read; please also
+          attach the JSON or CSV file if you can.
+        </p>
+        <p class="muted">
+          For the PDF, choose <b>Save as PDF</b> as the printer in the print
+          window.
+        </p>
+        <div class="actions">
+          <button type="button" class="btn primary" id="pdf-btn">
+            Download my copy as PDF
+          </button>
+          <button type="button" class="btn" id="json-btn">
+            Download as JSON
+          </button>
+          <button type="button" class="btn" id="csv-btn">
+            Download as CSV
+          </button>
+          <button type="button" class="btn danger" id="clear-btn">
+            Clear my answers
+          </button>
+        </div>
+        <div class="msg" id="dl-msg" role="status" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <footer class="wrap no-print">
+      KOMYUT system test checklist. This page works offline once loaded and
+      makes no network requests.
+    </footer>
+
+    <script>
+      /* ===== Fill these in before publishing (leave the [brackets] to show "to be announced") ===== */
+      const CONFIG = {
+        RETURN_EMAIL: "[RETURN EMAIL]",
+        DEMO_DATE_TIME: "[DEMO DATE AND TIME]",
+        MEETING_LINK: "[MEETING LINK]",
+        RECORDING_LINK: "[RECORDING LINK]",
+        APP_VERSION: "1.1.0+2",
+      };
+      /* =========================================================================================== */
+
+      const SECTIONS = [
+        {
+          role: "Passenger",
+          title: "Sign-up and login",
+          items: [
+            [
+              "P-01",
+              "A new passenger can sign up with name, CCA email, gender and a password that meets the rules; an email or student ID that is already registered is refused.",
+            ],
+            [
+              "P-02",
+              "Sign-up asks for a photo of the CCA ID, then a face scan that is matched to it.",
+            ],
+            [
+              "P-03",
+              'A passenger can sign in with their email or student ID (with a face check for an enrolled face), and "Forgot password" sends a reset.',
+            ],
+          ],
+        },
+        {
+          role: "Passenger",
+          title: "Booking a tricycle ride (shed queue on)",
+          items: [
+            [
+              "P-04",
+              'The pickup asks to "Choose a shed", sheds are listed nearest first with distances, and Find Ride stays disabled until a shed and destination are chosen.',
+            ],
+            [
+              "P-05",
+              "The fare is shown before booking, with the student discount applied and split per person.",
+            ],
+            [
+              "P-06",
+              'After booking, the waiting screen shows clear status ("Looking for the first driver…", then "A driver at … is looking at your request").',
+            ],
+            [
+              "P-07",
+              'Home is locked while a ride is ongoing ("Ride On Going - Unable to Book"), and that button opens the ride.',
+            ],
+            [
+              "P-08",
+              "The passenger can cancel a request, including while a driver is looking at it.",
+            ],
+            [
+              "P-09",
+              'If no driver takes the request, "Still no driver" offers Keep waiting or Cancel, and a very long wait ends with a clear explanation.',
+            ],
+          ],
+        },
+        {
+          role: "Passenger",
+          title: "Ride tracking",
+          items: [
+            [
+              "P-10",
+              'When a driver accepts, the passenger sees the live map with the driver’s position, an ETA and the stage ("Driver on the way", "On the trip").',
+            ],
+            [
+              "P-11",
+              "Passengers and the driver can message each other in the ride chat.",
+            ],
+            [
+              "P-12",
+              'At drop-off the passenger sees "You’ve arrived", can confirm the drop-off and is asked to rate the driver.',
+            ],
+          ],
+        },
+        {
+          role: "Passenger",
+          title: "History and ratings",
+          items: [
+            [
+              "P-13",
+              "Activity shows Ongoing and Recent rides, with a green dot while a ride is ongoing.",
+            ],
+            [
+              "P-14",
+              "A past ride shows the route taken and the fare, and its receipt can be exported as a PDF.",
+            ],
+            [
+              "P-15",
+              "Ratings & Reviews lists the passenger’s ratings, and the driver’s average updates after a new rating.",
+            ],
+          ],
+        },
+        {
+          role: "Passenger",
+          title: "Jeepney tickets and schedules",
+          items: [
+            [
+              "P-16",
+              "The Jeepney tab lists scheduled trips with departure time, seats and a route map.",
+            ],
+            [
+              "P-17",
+              'A passenger can book a seat and pay with GCash, and the ticket shows "Paid via GCash" or "Fare due".',
+            ],
+            [
+              "P-18",
+              "The ticket shows whether a driver is assigned and opens the Trip Chat.",
+            ],
+            [
+              "P-19",
+              "A passenger can cancel a seat, and a refund owed appears in Refunds & payments.",
+            ],
+          ],
+        },
+        {
+          role: "Passenger",
+          title: "Notifications and settings",
+          items: [
+            [
+              "P-20",
+              "The bell lists in-app notifications for ride and ticket changes, and Preferences can turn a type of pop-up off while the bell still lists it.",
+            ],
+            [
+              "P-21",
+              "The settings pages open and fit the screen: Edit Profile, Change Password, Ratings & Reviews, Refunds & payments, About.",
+            ],
+            [
+              "P-22",
+              "In Help & Support, the passenger chooses an issue from a list of options, sends it to the Komyut support team and can follow its status.",
+            ],
+          ],
+        },
+        {
+          role: "Passenger",
+          title: "Privacy and account",
+          items: [
+            [
+              "P-23",
+              "Privacy & data shows the location access status, what data is kept, who can see it and for how long.",
+            ],
+            [
+              "P-24",
+              '"Download my data" produces a file with the passenger’s own data.',
+            ],
+            [
+              "P-25",
+              '"Delete my account" explains what is deleted and what is kept, blocks deletion while a ride or refund is pending, and asks for the password and the word DELETE; afterwards, signing in shows the deleted-account message.',
+            ],
+          ],
+        },
+        {
+          role: "Driver",
+          title: "Sign-up and verification",
+          items: [
+            [
+              "D-01",
+              "A driver can sign up through the step-by-step wizard, including driver details and a checked plate number.",
+            ],
+            [
+              "D-02",
+              "Both sides of the licence are captured with the camera and the name on it is checked, and a selfie is matched to the licence photo.",
+            ],
+          ],
+        },
+        {
+          role: "Driver",
+          title: "Shed check-in and queue (tricycle)",
+          items: [
+            [
+              "D-03",
+              "The driver can go On duty (precise location is requested) and Off duty.",
+            ],
+            [
+              "D-04",
+              'Inside a shed, the card shows "Joining…" then the place in line ("#1 in line"); leaving starts a countdown, and coming back in time keeps the place.',
+            ],
+          ],
+        },
+        {
+          role: "Driver",
+          title: "Offers and skips",
+          items: [
+            [
+              "D-05",
+              'The first driver in line gets a full-screen "New ride request" with pickup, drop-off, passengers and a 30-second countdown.',
+            ],
+            [
+              "D-06",
+              "Accepting opens navigation on the driver’s phone and the live map on the passenger’s phone.",
+            ],
+            [
+              "D-07",
+              'Declining or letting the time run out counts as a skip ("1 of 3 skips"), and the request moves on to the next driver.',
+            ],
+            [
+              "D-08",
+              'If the passenger cancels during an offer, the driver sees "The passenger cancelled. You keep your place in line."',
+            ],
+          ],
+        },
+        {
+          role: "Driver",
+          title: "Navigation",
+          items: [
+            [
+              "D-09",
+              "Live Nav shows the route to the pickup, then the numbered drop-off stops with the next one marked.",
+            ],
+            [
+              "D-10",
+              "The driver can start the ride, drop off each passenger and end the ride, with a confirmation at each step.",
+            ],
+            [
+              "D-11",
+              "The driver can report a closed road or traffic from Live Nav.",
+            ],
+            [
+              "D-12",
+              "The driver’s history lists completed trips with their details.",
+            ],
+          ],
+        },
+        {
+          role: "Driver",
+          title: "Jeepney trip flow",
+          items: [
+            [
+              "D-13",
+              "A jeepney driver sees today’s trips and can claim a trip or release it, with a confirmation.",
+            ],
+            [
+              "D-14",
+              '"Passengers & Controls" lists the booked passengers and their payment status, and Trip Chat works.',
+            ],
+            [
+              "D-15",
+              "The driver can check in at the pickup, report a delay and end the trip at the destination.",
+            ],
+          ],
+        },
+        {
+          role: "Admin",
+          title: "Admin panel",
+          items: [
+            [
+              "A-01",
+              "The admin panel requires an admin sign-in, and other accounts are refused.",
+            ],
+            [
+              "A-02",
+              "The dashboard shows totals for passengers, drivers and rides, plus recent users and rides.",
+            ],
+            [
+              "A-03",
+              "User management has tabs for passengers, tricycle drivers, jeepney drivers and all rides, with search and filters.",
+            ],
+            [
+              "A-04",
+              "An admin can view and edit a user, suspend and unsuspend them, and send a password reset.",
+            ],
+            [
+              "A-05",
+              "An admin can remove a user, restore them within 15 days from Recently Deleted, or purge them.",
+            ],
+            [
+              "A-06",
+              "Sheds: an admin can add or edit a shed on the map (centre, radius, pickup point) and turn it on or off.",
+            ],
+            [
+              "A-07",
+              "Queues shows the drivers in line at each shed as it changes, and an admin can remove a driver from a line.",
+            ],
+            [
+              "A-08",
+              "Shed Settings switches the shed queue on or off, after a confirmation.",
+            ],
+            [
+              "A-09",
+              "Jeepney: schedules, trips by date, driver strikes, refunds owed and booking rules are managed here.",
+            ],
+            [
+              "A-10",
+              "Incidents & Help Tickets: tickets are sorted into queues; an admin can open one, reply, change its status and place a safety hold.",
+            ],
+            [
+              "A-11",
+              "Road Markings: driver road reports can be approved or dismissed, and an admin can block a road or mark traffic.",
+            ],
+            [
+              "A-12",
+              "Reports lists submitted reports with search and filters, and a report can be marked resolved.",
+            ],
+          ],
+        },
+        {
+          role: "Security and privacy",
+          title: "Security and privacy (as seen in the demo)",
+          items: [
+            [
+              "S-01",
+              "The app and the admin panel can only be used after signing in.",
+            ],
+            [
+              "S-02",
+              "A passenger sees only their own rides, tickets and messages; driver cards show only name, photo, rating and plate.",
+            ],
+            [
+              "S-03",
+              "With the shed queue on, drivers cannot pick passengers themselves; requests go to drivers in line order.",
+            ],
+            [
+              "S-04",
+              "Admin actions on sheds, queues, road markings and tickets are recorded in a log.",
+            ],
+          ],
+        },
+        {
+          role: "General",
+          title: "General",
+          items: [
+            [
+              "G-01",
+              "The app runs on the demo phones without crashing or freezing.",
+            ],
+            ["G-02", "Screens and maps load in a reasonable time."],
+            [
+              "G-03",
+              "A change on one phone shows on the other phone and in the admin panel within a few seconds.",
+            ],
+            [
+              "G-04",
+              "Error and status messages are clear and easy to understand.",
+            ],
+          ],
+        },
+      ];
+
+      const CHOICES = [
+        ["pass", "Pass"],
+        ["fail", "Fail"],
+        ["notshown", "Not shown"],
+      ];
+      const LABEL = Object.fromEntries(CHOICES);
+      const STORE_KEY = "komyut-test-checklist-v1";
+      const THEME_KEY = "komyut-test-checklist-theme";
+      const ALL_ITEMS = SECTIONS.flatMap((s) =>
+        s.items.map(([id, text]) => ({
+          id,
+          text,
+          section: s.title,
+          role: s.role,
+        })),
+      );
+
+      let state = {
+        meta: { name: "", position: "", organisation: "", date: "" },
+        answers: {},
+        comments: "",
+        savedAt: null,
+      };
+      let storageOk = true;
+
+      const $ = (sel) => document.querySelector(sel);
+      const el = (tag, attrs = {}, ...kids) => {
+        const n = document.createElement(tag);
+        for (const [k, v] of Object.entries(attrs)) {
+          if (k === "class") n.className = v;
+          else if (k === "text") n.textContent = v;
+          else n.setAttribute(k, v);
+        }
+        kids.forEach((k) => n.append(k));
+        return n;
+      };
+
+      /* ---- storage ---- */
+      function storageGet(key) {
+        try {
+          return localStorage.getItem(key);
+        } catch (e) {
+          return null;
+        }
+      }
+      function storageSet(key, val) {
+        try {
+          localStorage.setItem(key, val);
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
+      function storageDel(key) {
+        try {
+          localStorage.removeItem(key);
+        } catch (e) {
+          /* ignore */
+        }
+      }
+      function checkStorage() {
+        try {
+          localStorage.setItem("__komyut_test", "1");
+          localStorage.removeItem("__komyut_test");
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
+      function load() {
+        const raw = storageGet(STORE_KEY);
+        if (!raw) return;
+        try {
+          const s = JSON.parse(raw);
+          if (s && typeof s === "object") {
+            state.meta = Object.assign(state.meta, s.meta || {});
+            state.answers =
+              s.answers && typeof s.answers === "object" ? s.answers : {};
+            state.comments = typeof s.comments === "string" ? s.comments : "";
+            state.savedAt = s.savedAt || null;
+          }
+        } catch (e) {
+          /* corrupt copy: start fresh */
+        }
+      }
+      let saveTimer = null;
+      function save() {
+        state.savedAt = new Date().toISOString();
+        if (!storageOk) return;
+        if (!storageSet(STORE_KEY, JSON.stringify(state))) {
+          storageOk = false;
+          $("#storage-warn").hidden = false;
+          $("#save-status").textContent = "Not saved";
+          return;
+        }
+        $("#save-status").textContent = "Saved";
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(() => {
+          $("#save-status").textContent = "";
+        }, 2000);
+      }
+
+      /* ---- config ---- */
+      function isSet(v) {
+        return (
+          typeof v === "string" && v.trim() !== "" && !/^\[.*\]$/.test(v.trim())
+        );
+      }
+      function showText(id, v) {
+        $(id).textContent = isSet(v) ? v : "to be announced";
+      }
+      function showLink(id, v) {
+        const box = $(id);
+        box.textContent = "";
+        if (isSet(v) && /^https:\/\//i.test(v)) {
+          box.append(
+            el("a", {
+              href: v,
+              target: "_blank",
+              rel: "noopener noreferrer",
+              text: v,
+            }),
+          );
+        } else box.textContent = isSet(v) ? v : "to be announced";
+      }
+      function applyConfig() {
+        $("#cfg-version").textContent = CONFIG.APP_VERSION;
+        showText("#cfg-demo", CONFIG.DEMO_DATE_TIME);
+        showLink("#cfg-meeting", CONFIG.MEETING_LINK);
+        showLink("#cfg-recording", CONFIG.RECORDING_LINK);
+        showText("#cfg-email", CONFIG.RETURN_EMAIL);
+      }
+
+      /* ---- render ---- */
+      function render() {
+        const root = $("#checklist");
+        let lastRole = null;
+        SECTIONS.forEach((s, si) => {
+          if (s.role !== lastRole) {
+            // A one-section group whose title already names it (General, Security) needs no extra heading.
+            if (!s.title.startsWith(s.role))
+              root.append(el("h2", { class: "role-title", text: s.role }));
+            lastRole = s.role;
+          }
+          const det = el("details", {
+            class: "section",
+            open: "",
+            id: "sec-" + si,
+          });
+          const sum = el(
+            "summary",
+            {},
+            el("span", { class: "sum-title", text: s.title }),
+            el("span", { class: "count", id: "cnt-" + si }),
+          );
+          det.append(sum);
+          const box = el("div", { class: "items" });
+          s.items.forEach(([id, text]) => {
+            const fs = el("fieldset", { class: "item", id: "item-" + id });
+            const lg = el(
+              "legend",
+              {},
+              el("span", { class: "iid", text: id }),
+              document.createTextNode(text),
+            );
+            fs.append(lg);
+            const ch = el("div", { class: "choices" });
+            CHOICES.forEach(([val, lab]) => {
+              const rid = `r-${id}-${val}`;
+              const inp = el("input", {
+                type: "radio",
+                name: "r-" + id,
+                id: rid,
+                value: val,
+              });
+              if (state.answers[id]?.r === val) inp.checked = true;
+              inp.addEventListener("change", () => {
+                setAnswer(id, { r: val });
+              });
+              ch.append(
+                el(
+                  "div",
+                  { class: "choice" },
+                  inp,
+                  el("label", { for: rid, text: lab }),
+                ),
+              );
+            });
+            fs.append(ch);
+            fs.append(
+              el(
+                "div",
+                { class: "result-line print-only" },
+                document.createTextNode("Result: "),
+                el("span", { class: "pv", "data-pv-result": id }),
+              ),
+            );
+            const nid = "n-" + id;
+            const ta = el("textarea", { id: nid, rows: "2" });
+            ta.value = state.answers[id]?.n || "";
+            ta.addEventListener("input", () => setAnswer(id, { n: ta.value }));
+            fs.append(
+              el(
+                "div",
+                { class: "note" },
+                el("label", { for: nid, text: `Note for ${id} (optional)` }),
+                ta,
+                el("div", { class: "note-print pv", "data-pv-note": id }),
+              ),
+            );
+            box.append(fs);
+          });
+          det.append(box);
+          root.append(det);
+        });
+      }
+
+      function setAnswer(id, patch) {
+        const cur = Object.assign({ r: "", n: "" }, state.answers[id], patch);
+        if (!cur.r && !cur.n) delete state.answers[id];
+        else state.answers[id] = cur;
+        save();
+        update();
+      }
+
+      function counts() {
+        const c = { pass: 0, fail: 0, notshown: 0, open: 0 };
+        ALL_ITEMS.forEach((it) => {
+          const r = state.answers[it.id]?.r;
+          if (r && c[r] !== undefined) c[r]++;
+          else c.open++;
+        });
+        return c;
+      }
+
+      function update() {
+        const c = counts();
+        const total = ALL_ITEMS.length,
+          done = total - c.open;
+        $("#progress-text").textContent = `${done} of ${total} answered`;
+        $("#meter").style.width = (total ? (done / total) * 100 : 0) + "%";
+        $("#t-pass").textContent = c.pass;
+        $("#t-fail").textContent = c.fail;
+        $("#t-notshown").textContent = c.notshown;
+        $("#t-open").textContent = c.open;
+        $("#jump-btn").disabled = c.open === 0;
+        $("#jump-btn").textContent =
+          c.open === 0 ? "All answered" : "Jump to unanswered";
+        SECTIONS.forEach((s, si) => {
+          const d = s.items.filter(([id]) => state.answers[id]?.r).length;
+          const n = $("#cnt-" + si);
+          n.textContent = `${d} / ${s.items.length}`;
+          n.setAttribute("aria-label", `${d} of ${s.items.length} answered`);
+          n.classList.toggle("done", d === s.items.length);
+        });
+        // print mirrors
+        ALL_ITEMS.forEach((it) => {
+          const a = state.answers[it.id] || {};
+          document.querySelector(`[data-pv-result="${it.id}"]`).textContent =
+            a.r ? LABEL[a.r] : "Not answered";
+          const np = document.querySelector(`[data-pv-note="${it.id}"]`);
+          np.textContent = a.n ? "Note: " + a.n : "";
+        });
+        document.querySelectorAll("[data-pv]").forEach((n) => {
+          const k = n.dataset.pv;
+          n.textContent =
+            k === "comments" ? state.comments || "None" : state.meta[k] || "—";
+        });
+      }
+
+      /* ---- jump ---- */
+      function jumpToUnanswered() {
+        const it = ALL_ITEMS.find((i) => !state.answers[i.id]?.r);
+        if (!it) return;
+        const fs = document.getElementById("item-" + it.id);
+        const det = fs.closest("details");
+        if (det && !det.open) det.open = true;
+        fs.scrollIntoView({ behavior: "smooth", block: "start" });
+        fs.classList.remove("flash");
+        void fs.offsetWidth;
+        fs.classList.add("flash");
+        fs.querySelector("input").focus({ preventScroll: true });
+      }
+
+      /* ---- downloads ---- */
+      function slug(s) {
+        return (
+          (s || "evaluator")
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-|-$/g, "") || "evaluator"
+        );
+      }
+      function baseName() {
+        return `komyut-checklist-${slug(state.meta.name)}-${state.meta.date || new Date().toISOString().slice(0, 10)}`;
+      }
+      function needName() {
+        if (state.meta.name.trim()) return false;
+        const m = $("#dl-msg");
+        m.className = "msg err";
+        m.textContent =
+          "Please enter your full name in the Evaluator section first.";
+        $("#m-name").scrollIntoView({ block: "center" });
+        $("#m-name").focus({ preventScroll: true });
+        return true;
+      }
+      function okMsg(t) {
+        const m = $("#dl-msg");
+        m.className = "msg";
+        m.textContent = t;
+      }
+      function download(name, mime, text) {
+        const url = URL.createObjectURL(new Blob([text], { type: mime }));
+        const a = el("a", { href: url, download: name });
+        document.body.append(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 4000);
+      }
+      function exportData() {
+        const c = counts();
+        return {
+          checklist: "KOMYUT system test checklist",
+          appVersion: CONFIG.APP_VERSION,
+          exportedAt: new Date().toISOString(),
+          evaluator: { ...state.meta },
+          totals: {
+            pass: c.pass,
+            fail: c.fail,
+            notShown: c.notshown,
+            unanswered: c.open,
+            items: ALL_ITEMS.length,
+          },
+          items: ALL_ITEMS.map((it) => ({
+            id: it.id,
+            role: it.role,
+            section: it.section,
+            item: it.text,
+            result: state.answers[it.id]?.r
+              ? LABEL[state.answers[it.id].r]
+              : "",
+            note: state.answers[it.id]?.n || "",
+          })),
+          overallComments: state.comments,
+        };
+      }
+      function csvCell(v) {
+        let s = String(v ?? "");
+        if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; // keep spreadsheets from running typed text as a formula
+        return '"' + s.replace(/"/g, '""') + '"';
+      }
+      function toCsv(d) {
+        const rows = [["ID", "Role", "Section", "Item", "Result", "Note"]];
+        d.items.forEach((i) =>
+          rows.push([i.id, i.role, i.section, i.item, i.result, i.note]),
+        );
+        rows.push([]);
+        rows.push(["Evaluator", d.evaluator.name]);
+        rows.push(["Position", d.evaluator.position]);
+        rows.push(["Organisation", d.evaluator.organisation]);
+        rows.push(["Date", d.evaluator.date]);
+        rows.push(["App version", d.appVersion]);
+        rows.push(["Pass", d.totals.pass]);
+        rows.push(["Fail", d.totals.fail]);
+        rows.push(["Not shown", d.totals.notShown]);
+        rows.push(["Unanswered", d.totals.unanswered]);
+        rows.push(["Overall comments", d.overallComments]);
+        return (
+          "﻿" + rows.map((r) => r.map(csvCell).join(",")).join("\r\n") + "\r\n"
+        );
+      }
+
+      /* ---- print: open every section so nothing is hidden ---- */
+      let closedBeforePrint = [];
+      window.addEventListener("beforeprint", () => {
+        update();
+        closedBeforePrint = [
+          ...document.querySelectorAll("details.section:not([open])"),
+        ];
+        closedBeforePrint.forEach((d) => {
+          d.open = true;
+        });
+      });
+      window.addEventListener("afterprint", () => {
+        closedBeforePrint.forEach((d) => {
+          d.open = false;
+        });
+        closedBeforePrint = [];
+      });
+
+      /* ---- theme ---- */
+      const THEMES = ["auto", "light", "dark"];
+      function applyTheme(t) {
+        if (t === "auto")
+          document.documentElement.removeAttribute("data-theme");
+        else document.documentElement.setAttribute("data-theme", t);
+        const name = t[0].toUpperCase() + t.slice(1);
+        $("#theme-btn").textContent = "Theme: " + name;
+        $("#theme-btn").setAttribute(
+          "aria-label",
+          `Colour theme: ${name}. Change theme`,
+        );
+      }
+
+      /* ---- init ---- */
+      storageOk = checkStorage();
+      if (!storageOk) $("#storage-warn").hidden = false;
+      load();
+      applyConfig();
+      render();
+
+      document.querySelectorAll("[data-meta]").forEach((inp) => {
+        const k = inp.dataset.meta;
+        inp.value = state.meta[k] || "";
+        inp.addEventListener("input", () => {
+          state.meta[k] = inp.value;
+          save();
+          update();
+        });
+      });
+      const comments = $("#comments");
+      comments.value = state.comments;
+      comments.addEventListener("input", () => {
+        state.comments = comments.value;
+        save();
+        update();
+      });
+
+      let theme = storageGet(THEME_KEY);
+      if (!THEMES.includes(theme)) theme = "auto";
+      applyTheme(theme);
+      $("#theme-btn").addEventListener("click", () => {
+        theme = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];
+        applyTheme(theme);
+        storageSet(THEME_KEY, theme);
+      });
+
+      $("#jump-btn").addEventListener("click", jumpToUnanswered);
+      $("#pdf-btn").addEventListener("click", () => {
+        if (needName()) return;
+        okMsg("");
+        window.print();
+      });
+      $("#json-btn").addEventListener("click", () => {
+        if (needName()) return;
+        download(
+          baseName() + ".json",
+          "application/json",
+          JSON.stringify(exportData(), null, 2),
+        );
+        okMsg("JSON file downloaded.");
+      });
+      $("#csv-btn").addEventListener("click", () => {
+        if (needName()) return;
+        download(
+          baseName() + ".csv",
+          "text/csv;charset=utf-8",
+          toCsv(exportData()),
+        );
+        okMsg("CSV file downloaded.");
+      });
+      $("#clear-btn").addEventListener("click", () => {
+        if (
+          !confirm(
+            "Clear all your answers, notes, comments and evaluator details on this device? This cannot be undone.",
+          )
+        )
+          return;
+        storageDel(STORE_KEY);
+        state = {
+          meta: { name: "", position: "", organisation: "", date: "" },
+          answers: {},
+          comments: "",
+          savedAt: null,
+        };
+        document.querySelectorAll("[data-meta]").forEach((i) => {
+          i.value = "";
+        });
+        document.querySelectorAll(".choices input").forEach((i) => {
+          i.checked = false;
+        });
+        document.querySelectorAll(".note textarea").forEach((t) => {
+          t.value = "";
+        });
+        comments.value = "";
+        update();
+        okMsg("Your answers were cleared.");
+      });
+
+      update();
+    </script>
   </body>
 </html>
